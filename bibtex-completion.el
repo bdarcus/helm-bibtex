@@ -388,6 +388,11 @@ their associated bibtex files."
 (defvar bibtex-completion-file-watch-descriptors nil
   "List of file watches monitoring bibliography files for changes.")
 
+(defvar bibtex-completion-candidates-hook nil
+  "Function to run to create a 'bibtex-completion-candidates' string.
+The function is called with one argument: a candidate string for
+an entry, and must return a string.")
+
 (defun bibtex-completion-init ()
   "Check that the files and directories specified by the user actually exist.
 Also sets `bibtex-completion-display-formats-internal'."
@@ -568,6 +573,8 @@ fields listed above) as an alist."
     (nreverse
      (cl-loop
       for file in files
+      ;; TODO this is where the hook would go? bd
+      ;; (run-hook-with-args 'bibtex-completion-candidates-hook ...)
       append (cddr (assoc file bibtex-completion-cache))))))
 
 (defun bibtex-completion-resolve-crossrefs (files reparsed-files)
